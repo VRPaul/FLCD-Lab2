@@ -8,44 +8,36 @@ namespace Lab2
         static void Main(string[] args)
         {
             TestAddElement();
-            TestAddElementFirstKey();
-            TestAddElementsThirdKey();
-            TestGetNonexistentKey();
+            TestAddElementKey();
+            TestAddElementReturnedKey();
         }
 
         private static void TestAddElement()
         {
-            var st = new SymbolTable();
+            var st = new HashTable(50);
+
+            st.Insert("test");
+
+            Debug.Assert(!Equals(st.Search("test"), new Tuple<int, int>(-1, -1)));
+        }
+
+        private static void TestAddElementKey()
+        {
+            var st = new HashTable(50);
+
+            st.Insert("test");
+            Console.WriteLine(st.Search("test"));
+            Debug.Assert(Equals(st.Search("test"), new Tuple<int, int>(36, 0)));
+        }
+
+        private static void TestAddElementReturnedKey()
+        {
+            var st = new HashTable(50);
 
             var key = st.Insert("test");
 
-            Debug.Assert(st.Get(key) == "test");
-        }
-
-        private static void TestAddElementFirstKey()
-        {
-            var st = new SymbolTable();
-
-            var key = st.Insert("test");
-
-            Debug.Assert(key == 'a');
-        }
-
-        private static void TestAddElementsThirdKey()
-        {
-            var st = new SymbolTable();
-
-            st.Insert("test1");
-            st.Insert("test2");
-            var key = st.Insert("test3");
-
-            Debug.Assert(key == 'c');
+            Debug.Assert(Equals(st.Search("test"), key));
         }
         
-        private static void TestGetNonexistentKey()
-        {
-            var st = new SymbolTable();
-            Console.WriteLine(st.Get('a'));
-        }
     }
 }

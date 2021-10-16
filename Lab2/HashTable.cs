@@ -19,70 +19,78 @@ namespace Lab2
         /// to start with and 31(again prime), primes are good make random hash, as well I multiplied ASCII value with
         /// character position in string so "aSp" and "AsP" won't be same as well "asp" and "psa".
         /// </summary>
-        /// <param name="key">key</param>
+        /// <param name="value">key</param>
         /// <returns>returns index from the space based on some calculation</returns>
-        private int HashFunction(string key)
+        private int HashFunction(string value)
         {
             var index = 7;
             var asciiVal = 0;
-            for (var i = 0; i < key.Length; i++)
+            for (var i = 0; i < value.Length; i++)
             {
-                asciiVal = key[i] * i;
+                asciiVal = value[i] * i;
                 index = index * 31 + asciiVal;
             }
+            
             return index % tableSize;
         }
 
         /// <summary>
-        /// Inserts a value with key to table
+        /// Inserts a value to table
         /// </summary>
-        /// <param name="key">key</param>
-        /// <param name="value">value associated to key</param>
-        public void Insert(string key, object value)
+        /// <param name="value">value to insert</param>
+        /// <returns>Position in table with node index of the inserted element</returns>
+        public Tuple<int, int> Insert(string value)
         {
-            var genIndex = HashFunction(key);
-            Node node = universe[genIndex];
+            var hashValue = HashFunction(value);
+            Console.WriteLine(hashValue);
+            Node node = universe[hashValue];
 
+            if (!Equals(Search(value), new Tuple<int, int>(-1, -1)))
+            {
+                return Search(value);
+            }
+            
             if (node == null)
             {
-                universe[genIndex] = new Node() { Key = key, Value = value };
-                return;
+                universe[hashValue] = new Node() {Value = value};
+                return new Tuple<int, int>(hashValue, 0);
             }
 
-            if (node.Key == key)
-                throw new Exception("Can't use same key!");
-
             //resolve collision
+            var index = 1;
             while (node.Next != null)
             {
                 node = node.Next;
-                if (node.Key == key)
-                    throw new Exception("Can't use same key!");
+                index++;
             }
 
-            var newNode = new Node() { Key = key, Value = value, Previous = node, Next = null };
+            var newNode = new Node() {Value = value, Previous = node, Next = null};
             node.Next = newNode;
-        }
 
+            return new Tuple<int, int>(hashValue, index);
+        }
+        
         /// <summary>
-        /// fetch value of a key
+        /// Searches for a value in the table
         /// </summary>
-        /// <param name="key">key</param>
-        /// <returns>value</returns>
-        public object GetValue(string key)
+        /// <param name="value">Value to search</param>
+        /// <returns>Position in table with node index or (-1,-1) if the value is not found</returns>
+        public Tuple<int, int> Search(string value)
         {
-            var genIndex = HashFunction(key);
-            Node node = universe[genIndex];
+            var hashValue = HashFunction(value);
+            Node node = universe[hashValue];
+            var index = 0;
             while (node != null)
             {
-                if (node.Key == key)
+                if (node.Value == value)
                 {
-                    return node.Value;
+                    return new Tuple<int, int>(hashValue, index);
                 }
+            
                 node = node.Next;
+                index++;
             }
-
-            throw new Exception("Don't have the key in hash!");
+            return new Tuple<int, int>(-1, -1);
         }
     }
 }
