@@ -12,6 +12,9 @@ namespace Lab2
             TestAddElementReturnedKey();
         }
 
+        /// <summary>
+        /// Adds an element, then searches to if it's there
+        /// </summary>
         private static void TestAddElement()
         {
             var st = new HashTable(50);
@@ -21,6 +24,9 @@ namespace Lab2
             Debug.Assert(!Equals(st.Search("test"), new Tuple<int, int>(-1, -1)));
         }
 
+        /// <summary>
+        /// Adds an element, then compares the expected position with the one resulted after a search
+        /// </summary>
         private static void TestAddElementKey()
         {
             var st = new HashTable(50);
@@ -30,6 +36,9 @@ namespace Lab2
             Debug.Assert(Equals(st.Search("test"), new Tuple<int, int>(36, 0)));
         }
 
+        /// <summary>
+        /// Adds an element, then compares the returned key with the one resulted after a search
+        /// </summary>
         private static void TestAddElementReturnedKey()
         {
             var st = new HashTable(50);
