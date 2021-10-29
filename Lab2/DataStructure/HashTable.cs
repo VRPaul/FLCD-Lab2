@@ -42,7 +42,6 @@ namespace Lab2.DataStructure
         public Tuple<int, int> Insert(string value)
         {
             var hashValue = HashFunction(value);
-            Console.WriteLine(hashValue);
             Node node = universe[hashValue];
 
             if (!Equals(Search(value), new Tuple<int, int>(-1, -1)))
