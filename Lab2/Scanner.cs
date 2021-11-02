@@ -17,12 +17,12 @@ namespace Lab2
         private List<string> reservedWords;
 
         private Regex regexTokens = new Regex(
-            "-?[A-Za-z][A-Za-z0-9]*|\"[A-Za-z][A-Za-z0-9]*\"" +
+            "-?[A-Za-z][A-Za-z0-9]*|\" ?[A-Za-z ][A-Za-z0-9 ]*\"" +
             "|((\\+|\\-)?[0-9]+)|\\(|\\)|\\[|\\]|{|}|:|;|\\+<-|-<-|\\*<-|\\/<-|<=|>=|<-|=|\\+|-|\\*|\\/|,|\"");
         
         private Regex regexIdentifier = new Regex(@"[A-Za-z][A-Za-z0-9]*");
 
-        private Regex regexConstant = new Regex("True|False|0|((\\+|\\-)?[1-9][0-9]*)|\"[A-Za-z][A-Za-z0-9]*\"");
+        private Regex regexConstant = new Regex("True|False|0|((\\+|\\-)?[1-9][0-9]*)|\" ?[A-Za-z ][A-Za-z0-9 ]*\"");
 
         private int lineNo = 1;
 
@@ -80,13 +80,17 @@ namespace Lab2
                     }
                     else if (regexConstant.Match(match.ToString()).Success)
                     {
+                        if (regexConstant.Matches(match.ToString()).Count > 1)
+                        {
+                            Console.WriteLine("Lexical Error on line: " + lineNo);
+                            return;
+                        }
                         Pif.Add(new Tuple<string, Tuple<int, int>>("constant",St.Insert(match.ToString())));
                     }
                     else if (regexIdentifier.Match(match.ToString()).Success)
                     {
                         Pif.Add(new Tuple<string, Tuple<int, int>>("identifier",St.Insert(match.ToString())));
                     }
-
                     else
                     {
                         Console.WriteLine("Lexical Error on line: " + lineNo);

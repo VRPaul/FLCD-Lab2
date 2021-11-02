@@ -23,12 +23,12 @@ namespace Lab2.DataStructure
         /// <returns>returns index from the space based on some calculation</returns>
         private int HashFunction(string value)
         {
-            var index = 7;
+            var index = 1;
             var asciiVal = 0;
             for (var i = 0; i < value.Length; i++)
             {
                 asciiVal = value[i] * i;
-                index = index * 31 + asciiVal;
+                index = index * 2 + asciiVal;
             }
             
             return index % tableSize;
