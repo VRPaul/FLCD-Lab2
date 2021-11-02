@@ -58,7 +58,9 @@ namespace Lab2
         }
 
         /// <summary>
-        /// Scans the given program
+        /// Scans the given program line by line dividing each line into tokens using regex. The tokens are then
+        /// classified by being either reserved words, constants or identifiers. In case of no match than an error
+        /// is reported giving the line with the problem, otherwise the Pif content is returned.
         /// </summary>
         /// <param name="filePath">Program file path</param>
         public void Scan(string filePath)
@@ -105,6 +107,7 @@ namespace Lab2
             {
                 Console.WriteLine(item.ToString());
             }
+
         }
         
         private bool IsInPif(string value)
