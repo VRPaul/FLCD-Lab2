@@ -102,11 +102,9 @@ namespace Lab2
                 lineNo++;
             }
 
-            Console.WriteLine();
-            foreach (var item in Pif)
-            {
-                Console.WriteLine(item.ToString());
-            }
+            var pifLines = Pif.Select(item => item.ToString()).ToList();
+            File.WriteAllLines("Pif.out", pifLines);
+            St.Print();
 
         }
         

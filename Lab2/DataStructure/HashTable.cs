@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.IO;
 
 namespace Lab2.DataStructure
 {
@@ -30,7 +32,7 @@ namespace Lab2.DataStructure
                 asciiVal = value[i] * i;
                 index = index * 2 + asciiVal;
             }
-            
+
             return index % tableSize;
         }
 
@@ -48,7 +50,7 @@ namespace Lab2.DataStructure
             {
                 return Search(value);
             }
-            
+
             if (node == null)
             {
                 universe[hashValue] = new Node() {Value = value};
@@ -68,7 +70,7 @@ namespace Lab2.DataStructure
 
             return new Tuple<int, int>(hashValue, index);
         }
-        
+
         /// <summary>
         /// Searches for a value in the table
         /// </summary>
@@ -85,11 +87,34 @@ namespace Lab2.DataStructure
                 {
                     return new Tuple<int, int>(hashValue, index);
                 }
-            
+
                 node = node.Next;
                 index++;
             }
+
             return new Tuple<int, int>(-1, -1);
+        }
+
+        public void Print()
+        {
+            List<string> lines = new List<string>();
+
+            for (var index = 0; index < universe.Length; index++)
+            {
+                Node node = universe[index];
+                var nodeCrt = 0;
+                while (node != null)
+                {
+
+                    lines.Add(index + " " + nodeCrt + " : " + node.Value);
+                    
+                    node = node.Next;
+                    nodeCrt++;
+                }
+                index++;
+            }
+            
+            File.WriteAllLines("ST.out", lines);
         }
     }
 }
